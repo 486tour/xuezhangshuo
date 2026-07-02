@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>学校详情 — 学长说</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --bg:#0a0a0f;--bg2:#12121a;--bg3:#1a1a2e;
+  --accent:#6c5ce7;--accent2:#a29bfe;--accent3:#74b9ff;
+  --green:#00b894;--orange:#fdcb6e;--red:#ff7675;
+  --text:#e8e8f0;--text2:#a0a0b8;--text3:#6c6c80;
+  --border:#2a2a3e;--glass:rgba(255,255,255,0.03)
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:'Inter',-apple-system,BlinkMacSystemFont,'PingFang SC','Microsoft YaHei',sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.6;overflow-x:hidden;min-height:100vh
+}
+a{color:var(--accent2);text-decoration:none;transition:.2s}
+a:hover{color:var(--accent3)}
+
+/* Navbar */
+.navbar{
+  position:fixed;top:0;width:100%;z-index:100;
+  backdrop-filter:blur(20px);background:rgba(10,10,15,0.8);
+  border-bottom:1px solid var(--border);padding:0 2rem
+}
+.nav-inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:64px}
+.nav-logo{display:flex;align-items:center;gap:10px;font-weight:800;font-size:1.1rem;cursor:pointer}
+.nav-logo span{background:linear-gradient(135deg,var(--accent),var(--accent3));-webkit-background-clip:text;-webkit-text-fill-color:transparent}
+.nav-links{display:flex;gap:1.5rem;align-items:center}
+.nav-links a{color:var(--text2);font-size:.9rem;font-weight:500}
+.nav-links a:hover{color:var(--text)}
+
+/* Header */
+.school-header{
+  padding:7rem 2rem 3rem;position:relative;overflow:hidden;
+  text-align:center
+}
+.school-header-bg{
+  position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(108,92,231,0.12) 0%,transparent 60%),
+    radial-gradient(ellipse at 80% 50%,rgba(116,185,255,0.06) 0%,transparent 50%)
+}
+.header-content{position:relative;z-index:1;max-width:900px;margin:0 auto}
+.school-emoji{font-size:4rem;margin-bottom:.5rem;display:block}
+.school-header h1{font-size:clamp(1.8rem,4vw,3rem);font-weight:900;margin-bottom:.4rem}
+.school-header .badge-row{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-bottom:.8rem}
+.school-header .type-badge{
+  padding:5px 14px;border-radius:8px;font-size:.8rem;font-weight:700
+}
+.badge-985{background:rgba(253,203,110,0.2);color:var(--orange)}
+.badge-211{background:rgba(162,155,254,0.2);color:var(--accent2)}
+.badge-province{background:rgba(116,185,255,0.2);color:var(--accent3)}
+.badge-college{background:rgba(0,184,148,0.2);color:var(--green)}
+.badge-priv{background:rgba(255,255,255,0.08);color:var(--text3)}
+.school-header .meta{color:var(--text3);font-size:.95rem;margin-bottom:.5rem}
+.school-header .tags{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin:.5rem 0}
+.school-header .tag{
+  padding:4px 12px;border-radius:20px;font-size:.75rem;
+  background:rgba(255,255,255,0.05);color:var(--text2);
+  border:1px solid rgba(255,255,255,0.08)
+}
+
+/* Overview text */
+.overview{
+  max-width:900px;margin:0 auto 3rem;padding:0 2rem
+}
+.overview-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:16px;
+  padding:2rem;position:relative;overflow:hidden
+}
+.overview-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:3px;
+  background:linear-gradient(90deg,var(--accent),var(--accent3))
+}
+.overview-card h3{color:var(--accent2);font-size:.95rem;margin-bottom:.6rem}
+.overview-card p{color:var(--text2);font-size:.95rem;line-height:1.8}
+
+/* Info grid */
+.info-section{max-width:1200px;margin:0 auto 2rem;padding:0 2rem}
+.info-section h2{
+  font-size:1.5rem;font-weight:800;margin-bottom:1.5rem;
+  padding-left:1rem;border-left:3px solid var(--accent)
+}
+.info-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.2rem}
+.info-card{
+  background:var(--bg2);border:1px solid var(--border);border-radius:14px;
+  padding:1.5rem;transition:.3s
+}
+.info-card:hover{border-color:var(--accent2);transform:translateY(-2px);box-shadow:0 6px 20px rgba(108,92,231,0.08)}
+.info-card .card-icon{font-size:1.6rem;margin-bottom:.6rem}
+.info-card h4{font-size:.95rem;font-weight:700;margin-bottom:.5rem;color:var(--text)}
+.info-card p{color:var(--text2);font-size:.88rem;line-height:1.7}
+.info-card .status-tag{
+  display:inline-block;padding:3px 12px;border-radius:20px;font-size:.78rem;font-weight:600;margin-top:.3rem
+}
+.status-yes{background:rgba(0,184,148,0.15);color:var(--green)}
+.status-no{background:rgba(255,118,117,0.15);color:var(--red)}
+.status-depends{background:rgba(253,203,110,0.15);color:var(--orange)}
+
+/* Links section */
+.links-section{max-width:1200px;margin:0 auto 2rem;padding:0 2rem}
+.links-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:.8rem}
+.link-btn{
+  display:flex;align-items:center;gap:10px;padding:14px 18px;
+  background:var(--bg3);border:1px solid var(--border);border-radius:12px;
+  color:var(--text2);font-size:.9rem;font-weight:500;transition:.25s;text-decoration:none
+}
+.link-btn:hover{background:var(--accent);color:#fff;border-color:var(--accent);transform:translateY(-2px);box-shadow:0 6px 18px rgba(108,92,231,0.25)}
+.link-btn .link-icon{font-size:1.2rem;flex-shrink:0}
+.link-btn.external::after{content:' ↗';font-size:.7rem;opacity:.6;margin-left:auto}
+
+/* Back button */
+.back-section{text-align:center;padding:2rem 2rem 4rem}
+.back-btn{
+  display:inline-flex;align-items:center;gap:8px;padding:12px 28px;
+  background:var(--accent);color:#fff;border:none;border-radius:12px;
+  font-size:.95rem;font-weight:600;cursor:pointer;transition:.25s;
+  box-shadow:0 4px 16px rgba(108,92,231,0.3);text-decoration:none
+}
+.back-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(108,92,231,0.4);color:#fff}
+
+/* Not found */
+.not-found{text-align:center;padding:10rem 2rem}
+.not-found h2{font-size:2rem;margin-bottom:1rem}
+.not-found p{color:var(--text2);margin-bottom:2rem}
+
+/* Footer */
+footer{background:var(--bg2);border-top:1px solid var(--border);padding:2rem;text-align:center}
+footer p{color:var(--text3);font-size:.8rem}
+
+/* Scrollbar */
+::-webkit-scrollbar{width:8px}
+::-webkit-scrollbar-track{background:var(--bg)}
+::-webkit-scrollbar-thumb{background:var(--bg3);border-radius:4px}
+::-webkit-scrollbar-thumb:hover{background:var(--border)}
+
+/* Particles */
+.particles{position:fixed;inset:0;pointer-events:none;z-index:0}
+.particle{
+  position:absolute;width:2px;height:2px;background:var(--accent);
+  border-radius:50%;opacity:0.3;animation:float linear infinite
+}
+@keyframes float{
+  0%{transform:translateY(100vh) scale(0);opacity:0}
+  10%{opacity:0.3}90%{opacity:0.3}
+  100%{transform:translateY(-10vh) scale(1);opacity:0}
+}
+
+/* Fade */
+.fade-in{opacity:0;transform:translateY(30px);transition:opacity .6s,transform .6s}
+.fade-in.visible{opacity:1;transform:translateY(0)}
+
+@media(max-width:768px){
+  .info-grid{grid-template-columns:1fr}
+  .links-grid{grid-template-columns:repeat(2,1fr)}
+  .nav-links a:not(:last-child){display:none}
+}
+
+/* Two-column wide card */
+.info-card.wide{grid-column:1/-1}
+</style>
+</head>
+<body>
+
+<div class="particles" id="particles"></div>
+
+<nav class="navbar">
+  <div class="nav-inner">
+    <div class="nav-logo" onclick="window.location.href='index.html'">🎓 <span>学长说</span></div>
+    <div class="nav-links">
+      <a href="index.html">学校库</a>
+      <a href="index.html#feature">关于我们</a>
+    </div>
+  </div>
+</nav>
+
+<div id="content"></div>
+
+<footer><p>学长说 © 2026 — 大学信息查询平台 | 数据来源：各校官网、教育部公开信息</p></footer>
+
+<script src="schools-data.js"></script>
+<script src="schools-detail.js"></script>
+<script>
+(function(){
+var schools = SCHOOLS_DATA;
+var details = typeof SCHOOLS_DETAIL !== 'undefined' ? SCHOOLS_DETAIL : {};
+
+// Merge detail data into school objects
+for (var i = 0; i < schools.length; i++) {
+  if (details[schools[i].id]) {
+    schools[i].detail = details[schools[i].id];
+  }
+}
+
+var EMOJIS = {
+  '北京大学':'🏛️','清华大学':'🔬','复旦大学':'📖','上海交通大学':'🚢',
+  '浙江大学':'🏫','南京大学':'📜','中国科学技术大学':'🔭','哈尔滨工业大学':'🚀',
+  '西安交通大学':'⚡','武汉大学':'🌸','华中科技大学':'💻','中山大学':'🌴',
+  '华南理工大学':'🏗️','四川大学':'🐼','电子科技大学':'📡','重庆大学':'🏔️',
+  '东南大学':'🏛️','同济大学':'🌉','北京航空航天大学':'✈️','北京师范大学':'📚',
+  '中国人民大学':'⚖️','南开大学':'🏫','天津大学':'🔧','厦门大学':'🌊',
+  '山东大学':'⛰️','吉林大学':'🏢','大连理工大学':'🌊','东北大学':'⚙️',
+  '兰州大学':'🏜️','西北工业大学':'🛩️','中南大学':'🏥','湖南大学':'🏯',
+  '国防科技大学':'🛡️','中国农业大学':'🌾','北京理工大学':'🎯','华东师范大学':'📖',
+  '中国海洋大学':'🌊','西北农林科技大学':'🌿','中央民族大学':'🎪',
+  '深圳大学':'🌆','南方科技大学':'🧬','西南政法大学':'⚖️','华东政法大学':'⚖️',
+  '中国美术学院':'🎨','中央美术学院':'🎨','北京电影学院':'🎬','中国传媒大学':'🎙️',
+  '上海体育大学':'⚽','北京体育大学':'🏅'
+};
+var TYPE_EMOJIS = {'985':'🎓','211':'📘','province':'🏫','priv':'🏢','college':'🔧'};
+
+var params = new URLSearchParams(window.location.search);
+var id = parseInt(params.get('id'));
+
+var s = null;
+for (var i = 0; i < schools.length; i++) {
+  if (schools[i].id === id) { s = schools[i]; break; }
+}
+
+var content = document.getElementById('content');
+
+if (!s) {
+  content.innerHTML = '<div class="not-found"><h2>🏫 学校未找到</h2><p>数据库中暂无该学校信息</p><a class="back-btn" href="index.html">← 返回学校库</a></div>';
+} else {
+  var emoji = EMOJIS[s.name] || TYPE_EMOJIS[s.type] || '🏫';
+  var d = s.detail || {};
+  var bc = s.type === '985' ? 'badge-985' : s.type === '211' ? 'badge-211' : s.type === 'college' ? 'badge-college' : s.type === 'priv' ? 'badge-priv' : 'badge-province';
+
+  // Tags HTML
+  var tagsHtml = '';
+  for (var j = 0; j < s.tags.length; j++) {
+    tagsHtml += '<span class="tag">' + s.tags[j] + '</span>';
+  }
+
+  // Build info cards
+  var cards = [];
+
+  // Basic info card (always present)
+  var basicHtml = '';
+  if (d.address) basicHtml += '<p>📍 <strong>地址：</strong>' + d.address + '</p>';
+  basicHtml += '<p>🏙️ <strong>所在城市：</strong>' + s.city + ' · ' + s.province + '</p>';
+  basicHtml += '<p>🏷️ <strong>办学层次：</strong>' + (s.typeLabel || s.type) + '</p>';
+  if (d.website) basicHtml += '<p>🌐 <strong>官网：</strong><a href="' + d.website + '" target="_blank">' + d.website + '</a></p>';
+  cards.push({icon:'📋', title:'基本信息', content:basicHtml, cls:''});
+
+  // Dormitory
+  if (d.dormitory) cards.push({icon:'🏠', title:'住宿条件', content:'<p>' + d.dormitory + '</p>', cls:''});
+
+  // Dining
+  if (d.dining) cards.push({icon:'🍽️', title:'食堂餐饮', content:'<p>' + d.dining + '</p>', cls:''});
+
+  // Transport
+  if (d.transport) cards.push({icon:'🚇', title:'交通出行', content:'<p>' + d.transport + '</p>', cls:''});
+
+  // Surrounding
+  if (d.surrounding) cards.push({icon:'🏪', title:'周边生活', content:'<p>' + d.surrounding + '</p>', cls:''});
+
+  // Morning / Evening study
+  var studyHtml = '';
+  var hasStudy = false;
+  if (d.morningStudy) {
+    hasStudy = true;
+    var sc = d.morningStudy.indexOf('无')>=0 ? 'status-no' : d.morningStudy.indexOf('各院')>=0 || d.morningStudy.indexOf('不同')>=0 ? 'status-depends' : 'status-yes';
+    studyHtml += '<p>🌅 早自习：<span class="status-tag ' + sc + '">' + d.morningStudy + '</span></p>';
+  }
+  if (d.eveningStudy) {
+    hasStudy = true;
+    var sc2 = d.eveningStudy.indexOf('无')>=0 ? 'status-no' : d.eveningStudy.indexOf('各院')>=0 || d.eveningStudy.indexOf('不同')>=0 ? 'status-depends' : 'status-yes';
+    studyHtml += '<p>🌙 晚自习：<span class="status-tag ' + sc2 + '">' + d.eveningStudy + '</span></p>';
+  }
+  if (hasStudy) cards.push({icon:'📖', title:'早晚自习', content:studyHtml, cls:''});
+
+  // Campus environment
+  if (d.campusEnv) cards.push({icon:'🌳', title:'校园环境', content:'<p>' + d.campusEnv + '</p>', cls:''});
+
+  // Library
+  if (d.library) cards.push({icon:'📚', title:'图书馆', content:'<p>' + d.library + '</p>', cls:''});
+
+  // Sports
+  if (d.sports) cards.push({icon:'⚽', title:'体育设施', content:'<p>' + d.sports + '</p>', cls:''});
+
+  // Build links
+  var links = [];
+  if (d.website) links.push({title:'学校官网', url:d.website, icon:'🌐'});
+  if (d.admissions) links.push({title:'招生网', url:d.admissions, icon:'📝'});
+  if (d.baike) links.push({title:'百度百科', url:d.baike, icon:'📖'});
+  if (d.zhihu) links.push({title:'知乎话题', url:d.zhihu, icon:'💬'});
+  if (d.tieba) links.push({title:'贴吧', url:d.tieba, icon:'📣'});
+  if (d.otherLinks) {
+    for (var k = 0; k < d.otherLinks.length; k++) {
+      links.push({title:d.otherLinks[k].title, url:d.otherLinks[k].url, icon:'🔗'});
+    }
+  }
+  // Fallback: always add Baidu search link
+  links.push({title:'百度搜索', url:'https://www.baidu.com/s?wd=' + encodeURIComponent(s.name), icon:'🔍'});
+
+  document.title = s.name + ' — 学长说';
+
+  // Render
+  var html = '';
+  html += '<div class="school-header"><div class="school-header-bg"></div><div class="header-content">';
+  html += '<span class="school-emoji">' + emoji + '</span>';
+  html += '<h1>' + s.name + '</h1>';
+  html += '<div class="badge-row"><span class="type-badge ' + bc + '">' + (s.typeLabel || s.type) + '</span></div>';
+  html += '<div class="meta">📍 ' + s.city + ' · ' + s.province + '</div>';
+  html += '<div class="tags">' + tagsHtml + '</div>';
+  html += '</div></div>';
+
+  // Overview
+  html += '<div class="overview"><div class="overview-card fade-in">';
+  html += '<h3>📝 学校概况</h3><p>' + s.desc + '</p>';
+  html += '</div></div>';
+
+  // Info cards
+  if (cards.length > 0) {
+    html += '<div class="info-section"><h2>📊 详细信息</h2><div class="info-grid">';
+    for (var i = 0; i < cards.length; i++) {
+      var c = cards[i];
+      html += '<div class="info-card fade-in ' + c.cls + '"><div class="card-icon">' + c.icon + '</div><h4>' + c.title + '</h4>' + c.content + '</div>';
+    }
+    html += '</div></div>';
+  }
+
+  // Links
+  html += '<div class="links-section"><h2 style="font-size:1.5rem;font-weight:800;margin-bottom:1.2rem;padding-left:1rem;border-left:3px solid var(--accent)">🔗 外部链接</h2>';
+  html += '<div class="links-grid">';
+  for (var i = 0; i < links.length; i++) {
+    var l = links[i];
+    html += '<a class="link-btn external fade-in" href="' + l.url + '" target="_blank" rel="noopener"><span class="link-icon">' + l.icon + '</span>' + l.title + '</a>';
+  }
+  html += '</div></div>';
+
+  // Back
+  html += '<div class="back-section"><a class="back-btn" href="index.html">← 返回学校列表</a></div>';
+
+  content.innerHTML = html;
+}
+
+// Particles
+var pc = document.getElementById('particles');
+for (var i = 0; i < 30; i++) {
+  var p = document.createElement('div');
+  p.classList.add('particle');
+  p.style.left = Math.random() * 100 + '%';
+  p.style.animationDuration = (Math.random() * 15 + 10) + 's';
+  p.style.animationDelay = Math.random() * 10 + 's';
+  p.style.width = p.style.height = (Math.random() * 3 + 1) + 'px';
+  pc.appendChild(p);
+}
+
+// Scroll animation
+setTimeout(function(){
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(entry) { if (entry.isIntersecting) entry.target.classList.add('visible'); });
+  }, {threshold:0.15});
+  var els = document.querySelectorAll('.fade-in');
+  for (var i = 0; i < els.length; i++) observer.observe(els[i]);
+}, 100);
+})();
+</script>
+</body>
+</html>
